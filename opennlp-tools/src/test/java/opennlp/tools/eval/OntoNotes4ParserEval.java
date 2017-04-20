@@ -58,7 +58,7 @@ public class OntoNotes4ParserEval {
 
     cv.evaluate(samples, 10);
 
-    Assert.assertEquals(0.8d, cv.getFMeasure().getFMeasure(), expectedScore);
+    Assert.assertEquals(expectedScore, cv.getFMeasure().getFMeasure(), 0.001d);
   }
 
   @Test
@@ -71,6 +71,12 @@ public class OntoNotes4ParserEval {
           new InputStreamReader(headRulesIn, "UTF-8"));
     }
 
-    crossEval(ModelUtil.createDefaultTrainingParameters(), headRules, 0.937987617163142d);
+    TrainingParameters params = ModelUtil.createDefaultTrainingParameters();
+    params.put("build.Threads", "24");
+    params.put("tagger.Threads", "24");
+    params.put("chunker.Threads", "24");    
+    params.put("check.Threads", "24");
+
+    crossEval(params, headRules, 0.937987617163142d);
   }
 }
